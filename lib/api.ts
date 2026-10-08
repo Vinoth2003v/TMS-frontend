@@ -1,4 +1,4 @@
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8080/api';
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://tms-backend-production-b2bb.up.railway.app/api';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // DEMO DATA (used when Spring Boot backend is offline)
