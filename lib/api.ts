@@ -1,4 +1,12 @@
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://tms-backend-production-b2bb.up.railway.app/api';
+const getBaseUrl = (): string => {
+  const envUrl = process.env.NEXT_PUBLIC_API_URL?.trim();
+  const rawUrl = (envUrl && envUrl.length > 0)
+    ? envUrl.replace(/\/+$/, '')
+    : 'https://tms-backend-production-b2bb.up.railway.app';
+  return rawUrl.endsWith('/api') ? rawUrl : `${rawUrl}/api`;
+};
+
+const BASE_URL = getBaseUrl();
 
 // ─────────────────────────────────────────────────────────────────────────────
 // DEMO DATA (used when Spring Boot backend is offline)
@@ -30,8 +38,8 @@ function isDemoMode(): boolean {
 }
 
 // Auto-detect backend on startup and clear demo mode if reachable.
-// We POST to the public /auth/login endpoint — any HTTP response (even 401/400)
-// means the backend is up. Only a network-level failure means it's offline.
+// We POST to the public /api/auth/login endpoint (BASE_URL already includes '/api').
+// Any HTTP response (even 401/400) means the backend is up. Only network failure means offline.
 if (typeof window !== 'undefined') {
   fetch(`${BASE_URL}/auth/login`, {
     method: 'POST',
